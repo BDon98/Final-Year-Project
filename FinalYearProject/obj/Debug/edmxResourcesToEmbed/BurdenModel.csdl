@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="BurdenModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+  <EntityContainer Name="BurdenModelContainer" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Users" EntityType="BurdenModel.User" />
+    <EntitySet Name="CivilSuits" EntityType="BurdenModel.CivilSuit" />
+    <AssociationSet Name="UserCivilSuit" Association="BurdenModel.UserCivilSuit">
+      <End Role="User" EntitySet="Users" />
+      <End Role="CivilSuit" EntitySet="CivilSuits" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <NavigationProperty Name="CivilSuits" Relationship="BurdenModel.UserCivilSuit" FromRole="User" ToRole="CivilSuit" />
+    <Property Name="Name" Type="String" Nullable="false" />
+    <Property Name="Username" Type="String" Nullable="false" MaxLength="20" />
+    <Property Name="Password" Type="String" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CivilSuit">
+    <Key>
+      <PropertyRef Name="SuitId" />
+    </Key>
+    <Property Name="SuitId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <NavigationProperty Name="User" Relationship="BurdenModel.UserCivilSuit" FromRole="CivilSuit" ToRole="User" />
+    <Property Name="UserUserId" Type="Int32" Nullable="false" />
+    <Property Name="SuitName" Type="String" Nullable="false" />
+    <Property Name="Description" Type="String" Nullable="false" />
+    <Property Name="WhichParty" Type="String" Nullable="false" />
+    <Property Name="Progress" Type="String" Nullable="true" />
+    <Property Name="Category" Type="String" Nullable="false" />
+    <Property Name="SubCategory" Type="String" Nullable="false" />
+    <Property Name="Stage" Type="String" Nullable="false" />
+  </EntityType>
+  <Association Name="UserCivilSuit">
+    <End Type="BurdenModel.User" Role="User" Multiplicity="1" />
+    <End Type="BurdenModel.CivilSuit" Role="CivilSuit" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="CivilSuit">
+        <PropertyRef Name="UserUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

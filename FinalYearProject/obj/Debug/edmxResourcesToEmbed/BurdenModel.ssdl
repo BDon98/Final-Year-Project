@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="BurdenModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="BurdenModelStoreContainer">
+    <EntitySet Name="Users" EntityType="BurdenModel.Store.Users" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="CivilSuits" EntityType="BurdenModel.Store.CivilSuits" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="UserCivilSuit" Association="BurdenModel.Store.UserCivilSuit">
+      <End Role="User" EntitySet="Users" />
+      <End Role="CivilSuit" EntitySet="CivilSuits" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Username" Type="nvarchar" Nullable="false" MaxLength="20" />
+    <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CivilSuits">
+    <Key>
+      <PropertyRef Name="SuitId" />
+    </Key>
+    <Property Name="SuitId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserUserId" Type="int" Nullable="false" />
+    <Property Name="SuitName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="WhichParty" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Progress" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Category" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="SubCategory" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Stage" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <Association Name="UserCivilSuit">
+    <End Role="User" Type="BurdenModel.Store.Users" Multiplicity="1" />
+    <End Role="CivilSuit" Type="BurdenModel.Store.CivilSuits" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="CivilSuit">
+        <PropertyRef Name="UserUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

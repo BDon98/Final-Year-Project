@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="BurdenModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="BurdenModelStoreContainer">
+    <EntitySet Name="Users" EntityType="BurdenModel.Store.Users" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="CivilSuits" EntityType="BurdenModel.Store.CivilSuits" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="UserCivilSuit" Association="BurdenModel.Store.UserCivilSuit">
+      <End Role="User" EntitySet="Users" />
+      <End Role="CivilSuit" EntitySet="CivilSuits" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Username" Type="nvarchar" Nullable="false" MaxLength="20" />
+    <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CivilSuits">
+    <Key>
+      <PropertyRef Name="SuitId" />
+    </Key>
+    <Property Name="SuitId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserUserId" Type="int" Nullable="false" />
+    <Property Name="SuitName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="WhichParty" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Progress" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Category" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="SubCategory" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Stage" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <Association Name="UserCivilSuit">
+    <End Role="User" Type="BurdenModel.Store.Users" Multiplicity="1" />
+    <End Role="CivilSuit" Type="BurdenModel.Store.CivilSuits" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="CivilSuit">
+        <PropertyRef Name="UserUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="BurdenModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="BurdenModelContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Users" EntityType="BurdenModel.User" />
+          <EntitySet Name="CivilSuits" EntityType="BurdenModel.CivilSuit" />
+          <AssociationSet Name="UserCivilSuit" Association="BurdenModel.UserCivilSuit">
+            <End Role="User" EntitySet="Users" />
+            <End Role="CivilSuit" EntitySet="CivilSuits" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="CivilSuits" Relationship="BurdenModel.UserCivilSuit" FromRole="User" ToRole="CivilSuit" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Username" Type="String" Nullable="false" MaxLength="20" />
+          <Property Name="Password" Type="String" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CivilSuit">
+          <Key>
+            <PropertyRef Name="SuitId" />
+          </Key>
+          <Property Name="SuitId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="User" Relationship="BurdenModel.UserCivilSuit" FromRole="CivilSuit" ToRole="User" />
+          <Property Name="UserUserId" Type="Int32" Nullable="false" />
+          <Property Name="SuitName" Type="String" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="false" />
+          <Property Name="WhichParty" Type="String" Nullable="false" />
+          <Property Name="Progress" Type="String" Nullable="true" />
+          <Property Name="Category" Type="String" Nullable="false" />
+          <Property Name="SubCategory" Type="String" Nullable="false" />
+          <Property Name="Stage" Type="String" Nullable="false" />
+        </EntityType>
+        <Association Name="UserCivilSuit">
+          <End Type="BurdenModel.User" Role="User" Multiplicity="1" />
+          <End Type="BurdenModel.CivilSuit" Role="CivilSuit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="CivilSuit">
+              <PropertyRef Name="UserUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="BurdenModelStoreContainer" CdmEntityContainer="BurdenModelContainer">
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="IsTypeOf(BurdenModel.User)">
+        <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Username" ColumnName="Username" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CivilSuits">
+      <EntityTypeMapping TypeName="IsTypeOf(BurdenModel.CivilSuit)">
+        <MappingFragment StoreEntitySet="CivilSuits">
+          <ScalarProperty Name="SuitId" ColumnName="SuitId" />
+          <ScalarProperty Name="UserUserId" ColumnName="UserUserId" />
+          <ScalarProperty Name="SuitName" ColumnName="SuitName" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="WhichParty" ColumnName="WhichParty" />
+          <ScalarProperty Name="Progress" ColumnName="Progress" />
+          <ScalarProperty Name="Category" ColumnName="Category" />
+          <ScalarProperty Name="SubCategory" ColumnName="SubCategory" />
+          <ScalarProperty Name="Stage" ColumnName="Stage" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
